@@ -1,0 +1,109 @@
+<div class="p-2">  
+<!--   <input style="width: 20px;" (change)="onSearchChange('Home')"  type="radio" id="Home" name="Search" width="20">
+  <label for="Home">Home Depot</label><br>
+  <input style="width: 20px;" (change)="onSearchChange('Public')" type="radio" id="Public" name="Search" width="20">
+  <label for="Public">Public</label> -->
+
+    <div class="container">
+        <input #myInput (keydown.enter)="GetItemInfo(code)" type="text" placeholder="code ..." [(ngModel)]="code">
+        <button class="btn btn-success rounded" (click)="GetItemInfo(code)">بحث</button>
+            <div *ngIf="isLoading" class="loading-indicator m-1 p-2">
+                <i class="fas fa-spinner fa-spin"></i> 
+                <span>&nbsp;</span>
+                <span>جاري البحث</span>
+            </div> 
+    </div>
+</div>
+
+<div *ngIf="showError" class="text-center p-5" style="color: rgb(252, 0, 0); font-weight: bold; font-size: large;">
+    الرمز المدخل غير صالح
+</div>
+
+<div *ngIf="showHome">
+    <!-- <div class="col-md-6 mb-3 p-1 pl-5 pt-2 d-flex justify-content-start">
+        <label class="form-label fw-bold" style="color: rgb(252, 0, 0); font-weight: bold; font-size: large;">Data Source:&nbsp;</label>
+        <p style="background-color: rgb(202, 200, 198); border-radius: 5px; padding: 5px;">{{ source }}</p>
+    </div> -->
+    
+    <div class="container">
+        <div class="row justify-content-center align-items-start pt-2 vh-100">
+            <div class="col-md-8">
+                <div class="card shadow-lg p-2 rounded">
+       
+                    <div class="col-md-12">
+                        <div class="row col-md-12 justify-content-between">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">السعر</label>
+                                <div class="d-flex justify-content-start">
+                                    <input type="text" class="form-control pe-4 text-end" [(ngModel)]="price">
+                                    <span class="translate-middle-y m-2 text-muted">{{ currency }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row col-md-12 justify-content-between">
+                            <div class="col-md-3 mb-3">
+                                <label class="form-label fw-bold">الشركة</label>
+                                <input class="form-control" type="text" [ngModel]="brand">
+                            </div>    
+                         </div>
+                         <div class="row col-md-12">
+                            <div class="col-md-12 mb-3">
+                                <label class="fw-bold">اسم المنتج</label>
+                                <input class="form-control w-100" type="text" [ngModel]="title">
+                            </div>
+                         </div>
+                    </div>
+                    <div class="col-md-10 text m-3">
+                        <button 
+                         class="btn btn-success w-25">
+                            حفظ
+                        </button>
+                    </div>
+                    
+                </div>
+            </div>
+        
+            <div class="col-md-4 text-center">
+                <div class="card shadow-lg p-3 rounded">
+                    <h5 class="text-center mb-3">صور المنتج</h5>
+                        <div *ngIf="isLoadingForImg" class="loading-indicator m-1 p-2">
+                            <i class="fas fa-spinner fa-spin"></i> 
+                        </div>
+
+                    <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <div 
+                        class="carousel-item" 
+                        *ngFor="let img of images; let i = index" 
+                        [class.active]="i === 0"
+                        >
+                        <img [src]="image" class="img-fluid rounded shadow d-block w-100" alt="صورة">
+                        </div>
+                    </div>
+
+                    <button 
+                        (click)="ChangePhoto(+1)"
+                        class="carousel-control-prev no-bg" 
+                        type="button" 
+                        data-bs-target="#productCarousel" 
+                        data-bs-slide="prev"
+                        style="background-color: transparent;">
+                        <span style="background-color: black;" class="carousel-control-prev-icon"></span>
+                    </button>
+
+                    <button 
+                        (click)="ChangePhoto(-1)"
+                        class="carousel-control-next no-bg" 
+                        type="button" 
+                        data-bs-target="#productCarousel" 
+                        data-bs-slide="next"
+                        style="background-color: transparent;"
+                    >
+                        <span style="background-color: black;" class="carousel-control-next-icon"></span>
+                    </button>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,90 @@
+<div class="container mt-2">
+  <h2 class="mb-1 text-center">قائمة المنتجات</h2>
+  <div *ngIf="isLoading" class="d-flex justify-content-center align-items-center" style="height: 100px;">
+    <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden"></span>
+    </div>
+  </div>
+
+    <div *ngIf="isFaild" class="text-danger fw-bold d-flex justify-content-center align-items-center" style="height: 50px;">
+        تعذر جلب المنتجات يرجى التحقق من الاتصال بالشبكة
+    </div>
+
+  <div class="text-center m-5 text-primary" *ngIf="Items.length == 0">
+    لا يوجد منتجات لعرضها
+  </div>
+
+  <div *ngIf="Items.length > 0" class="table-responsive">
+    <table class="table table-bordered table-hover align-middle text-center">
+      <thead class="table-dark">
+        <tr>
+          <th>صور المنتج</th>
+          <th>الكمية</th>
+          <th>الحالة</th>
+          <th>السعر</th>
+          <th>اسم المنتج</th>
+        </tr>
+      </thead>
+      <tbody>
+       <tr *ngFor="let product of Items; let i = index">
+          <td style="width: 30%;">
+              <div class="d-flex justify-content-center align-items-center">
+                <div class="d-flex flex-row justify-content-center" style="width: 200px; height: 180px;">
+                  <button (click)="changePhoto(product, -1)"
+                          class="btn btn-sm btn-info"
+                          style="padding: 2px 5px;"><</button>
+                          <a (click)="downloadImageViaServer(product.item.itemImages[product.currentImageIndex]?.imageLink)"
+
+                          >
+                  <img [src]="product.item.itemImages[product.currentImageIndex]?.imageLink"
+                      class="rounded"
+                      style="width: 100%; height: 100%; object-fit: cover;"
+                      alt="Product Image" />
+                          </a>
+                  <button (click)="changePhoto(product, 1)"
+                          class="btn btn-sm btn-info"
+                          style="padding: 2px 5px;">></button>
+                </div>
+            </div>
+            </td>
+            <td class="text-center" style="width: 10%; vertical-align: middle;"></td>
+            <td style="width: 10%;">{{ product.itemCondetion.description }}</td>
+            <td style="width: 10%;">${{ product.item.sitePrice }}</td>
+            <td (click)="openPopup(product)" class="text-center" style="width: 30%; vertical-align: middle; cursor: pointer;">
+              {{ product.item.engName }}
+            </td>
+          </tr>
+
+      </tbody>
+    </table>
+  </div>
+  <!--  -->
+  <div class="popup-overlay" *ngIf="selectedProduct" (click)="closePopup()">
+    <div class="popup-content" (click)="$event.stopPropagation()">
+      <div><strong>Product Name:</strong> {{ selectedProduct.item.engName }}</div>
+      <div><strong>Status:</strong> {{ selectedProduct.itemCondetion.description }}</div>
+      <div><strong>Price:</strong> {{ selectedProduct.item.sitePrice }}$</div>
+      <!-- <div><strong>Category:</strong> {{ selectedProduct.item.category.categoryName }}</div> -->
+      <div><strong>Platform:</strong> {{ selectedProduct.item.platform.desciption }}</div>
+      <div><strong>Brand:</strong> {{ selectedProduct.item.make.makeDescription }}</div>
+      <div><strong>Notes:</strong> {{ selectedProduct.item_notes }}</div>
+      <hr/>
+      <div class="image-slider">
+        <img [src]="selectedProduct.item.itemImages[currentImageIndex]?.imageLink"
+            alt="Product Image"
+            class="slider-image" />
+
+        <div class="slider-controls">
+          <button class="btn-success" (click)="prevImage()" [disabled]="currentImageIndex === 0">←</button>
+          <span>{{ currentImageIndex + 1 }} / {{ selectedProduct.item.itemImages.length }}</span>
+          <button class="btn-success" (click)="nextImage()" [disabled]="currentImageIndex === selectedProduct.item.itemImages.length - 1">→</button>
+        </div>
+      </div>
+      <div class="d-flex justify-content-center">
+        <svg id="barcode"></svg>
+      </div>
+      <button class="btn btn-info mt-4" (click)="closePopup()">إغلاق</button>
+    </div>
+  </div>
+  <!--  -->
+</div>
