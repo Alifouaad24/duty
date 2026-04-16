@@ -1,0 +1,82 @@
+<a href="https://developer.ebay.com/DevZone/build-test/test-tool/default.aspx?index=0&env=production&api=browse&call=item_summary_search__GET&variation=json"
+  target="_blank" rel="noopener noreferrer">
+  Go to Ebay
+</a>
+<div class="container my-3 p-3 border rounded shadow-sm bg-light">
+  <!-- Login Section -->
+  <div class="d-flex justify-content-end align-items-center mb-3 gap-2">
+    <input #token class="form-control" placeholder="Enter eBay token" style="width: 250px;" />
+    <button 
+      class="btn btn-danger text-light" 
+      style="font-size: 14px; min-width: 180px; height: 40px;"
+      (click)="LogInToEbayDiredty(token)">
+      تسجيل الدخول
+    </button>
+  </div>
+
+  <!-- Search Type Selection -->
+  <div class="d-flex justify-content-start gap-4 mb-3 p-2 border rounded bg-white">
+    <div class="form-check">
+      <input 
+        id="Image" 
+        type="radio" 
+        checked 
+        value="Image" 
+        name="SearhBySku" 
+        class="form-check-input"
+        (change)="ChangeView($event)" />
+      <label for="Image" class="form-check-label">
+        Image
+      </label>
+    </div>
+    &nbsp;&nbsp;|&nbsp;&nbsp;
+    <div class="form-check"> 
+      <input 
+        id="text" 
+        type="radio" 
+        value="text" 
+        name="SearhBySku" 
+        class="form-check-input"
+        (change)="ChangeView($event)" />
+      <label for="text" class="form-check-label">
+        Text
+      </label>
+    </div>
+  </div>
+
+  <!-- Input Section -->
+  <div class="d-flex gap-3 align-items-center">
+    <div *ngIf="byImg" class="flex-shrink-0">
+      <input 
+        type="file" 
+        class="form-control" 
+        style="min-width: 200px;" 
+        (change)="getItemsByImage($event)" />
+    </div>
+    <div *ngIf="!byImg" class="flex-shrink-0">
+      <input 
+        type="text" [(ngModel)]="textForSearch"
+        class="form-control" 
+        style="min-width: 200px;" 
+        placeholder="Enter search text" /><button (click)="getItemsByText()" class="btn-view">Search</button>
+    </div>
+  </div>
+</div>
+
+
+
+
+<div *ngIf="loading" class="loading text-center">Loading...</div>
+
+<div class="products-container" *ngIf="!loading">
+  <div class="product-card" *ngFor="let product of products">
+    <img [src]="product.imageUrl" alt="{{product.title}}" class="product-image" />
+    <div class="product-details">
+      <h3 class="product-title">{{product.title}}</h3>
+      <p><strong>Price:</strong> {{ product.price | number:'1.0-0' }} {{ product.currency }}</p>
+      <p><strong>Seller:</strong> {{product.sellerUsername}}</p>
+      <p *ngIf="product.condition"><strong>Condition:</strong> {{product.condition}}</p>
+      <a [href]="product.itemWebUrl" target="_blank" class="btn-view">View Product</a>
+    </div>
+  </div>
+</div>

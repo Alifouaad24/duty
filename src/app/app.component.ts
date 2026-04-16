@@ -52,18 +52,15 @@ export class AppComponent implements OnInit {
         { path: '**', component: NotFoundComponent }
       ]);
 
-          const urlParams = new URLSearchParams(window.location.search);
-          const token = urlParams.get('access_token');
-          console.log("access_token: " + token)
+      const urlParams = new URLSearchParams(window.location.search);
+      const token = urlParams.get('tokenId');
 
-          if (token) {
-            localStorage.setItem('ebay_token', token);
-            this.router.navigate(['/store']);
-          } else {
-            this.router.navigate(['/']);
-          }
-
-      
+      if (token) {
+        localStorage.setItem('tokenId', token);
+        this.router.navigate(['/store']);
+      } else {
+        this.router.navigate(['/']);
+      }
     });
 
     this.http.getData("api/Enviroment").subscribe(res => {
@@ -78,8 +75,8 @@ export class AppComponent implements OnInit {
       return ShowOrdersDetailsComponent;
 
     case 'ebay':
-      const { EbayComponent } = await import('./ebay/ebay.component');
-      return EbayComponent;
+      const { SearchInEbayComponent } = await import('./Store/search-in-ebay/search-in-ebay.component');
+      return SearchInEbayComponent;
 
     case 'marketPlace':
       const { MarketPlaceComponent } = await import('./Store/market-place/market-place.component');
